@@ -1,25 +1,13 @@
-How to Check Battery Status Using Linux Command Line
-Follow the methods mentioned below to check battery status using the Linux command line. Check Battery Status with “upower” CommandThe command produces output 
-
-Check Battery Status with upower Command
-The upower command-line tool helps extract information related to the power source (batteries). It provides an interface to list down all the power sources of your PC or laptop.
-
-Options Used with the upower Command
-
+Battery status
+*upower*
 –monitor: You can print a line each time a battery or power source is added by connecting –monitor to upower. It also produces outputs while the power sources are removed or changed.
-
 –monitor-detail: This option prints the full power source detail whenever an event occurs.
 
- 
-
 Syntax
-
 upower -i /org/freedesktop/UPower/devices/battery_BAT0
-
 upower -i `upower -e | grep 'BAT'`
-
 upower -i $(upower -e | grep BAT) | grep --color=never -E "state|to\ full|to\ empty|percentage"
-The above are three different ways of using acpi command to find power source information.
+       The above are three different ways of using acpi command to find power source information.
 
 Use cat and find
 The “cat” and “find” commands also help find details about your battery and power source.
