@@ -1,0 +1,16 @@
+Let's talk about size: It's not always important to have the biggest. It's all about what's on the inside. The quality is always more important than the quantity. Of course we're all adults here, so we know what I'm talking about: Log Files!
+
+Don't feel bad if you're just now starting to think about it--It's taken me months to finally get mine in order.
+
+You can trim your logs with logrotate which will keep a few recent logs (compressed) and of course the currently-used log will be uncompressed and available.
+
+Using Ubuntu, here's some instructions to get it running for you:
+sudo apt update && sudo apt upgrade # general advice to always keep the system up to date--optional
+sudo apt install logrotate # actually install the program
+sudo {editor||nano||vim} /etc/logrotate.conf # let's ensure the correct parameters are enabled. I use daily rotation and keep 30 days, you'll rarely ever need that many. Make sure to create new. Simply place the word "create" on it's own line. Make sure to include the directory: "include /etc/logrotate.d" should also be on it's own line. Save the file
+sudo mkdir /etc/logrotate.d # create the logrotate.d directory of our doesn't exist
+sudo {editor||nano||vim} /etc/logrotate.d/timpi} # creates this file and I'm now we'll add our parameters to it:
+/var/log/timpi/log.txt {
+   missingok
+   sharedscripts
+}

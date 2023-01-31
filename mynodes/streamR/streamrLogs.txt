@@ -1,0 +1,1 @@
+ssh 192.168.9.88 docker logs f34e | tail -50 | egrep -i "reward|claim";echo; echo"=====================";echo; ssh 192.168.9.88 docker logs 22f13 | tail -50 | egrep -i "reward|claim"; 

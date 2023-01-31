@@ -1,0 +1,10 @@
+sudo apt update && sudo apt -y upgrade
+sudo apt install p7zip-full lxqt -y 
+export fileUrl=https://cdn.discordapp.com/attachments/981709237812072498/1011434761786507404/Collector_Linux_0.8.36.zip
+export fileName=$(basename "$fileUrl"})
+curl ${fileUrl} -o timpi.zip || wget ${fileUrl}-o timpi.zip
+7z x timpi.zip
+sudo mkdir /var/log/timpi && sudo chown $USER:$USER /var/log/timpi
+sudo mkdir /etc/timpi && sudo chown $USER:$USER /etc/timpi
+ln -s Collector_Linux_0.8.36 TimpiCollector
+chmod 700 ./TimpiCollector/TimpiCollector 

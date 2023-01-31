@@ -1,0 +1,1 @@
+sudo usermod -l borysr ubuntu; sudo groupmod -n borysr ubuntu; sudo usermod -d /home/borysr -m borysr; sudo ls -la ../;

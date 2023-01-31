@@ -1,0 +1,26 @@
+## create directories for ipfs data
+$> mkdir .ipfs
+$> mkdir .ipfs/data
+$> mkdir .ipfs/staging
+$> export ipfs_staging=/home/<your-user>/.ipfs/staging
+$> export ipfs_data=/home/<your-user>/.ipfs/data
+
+## create script file:  001-test.sh >>> with these 4 lines
+#!/bin/sh
+set -ex
+ipfs bootstrap rm all
+ipfs bootstrap add "/ip4/$PRIVATE_PEER_IP_ADDR/tcp/4001/ipfs/$PRIVATE_PEER_ID" # this is from PDF instructions
+<<<<<
+
+$> chmod +x 001-test.sh
+## swarm.key file should be available here
+
+$> docker run -d --name ipfs_node -e PRIVATE_PEER_ID=$PRIVATE_PEER_ID -e PRIVATE_PEER_IP_ADDRESS=$PRIVATE_PEER_IP_ADDR -e IPFS_SWARM_KEY="$(cat swarm.key)" -v /home/<your_user>/001-test.sh:/container-init.d/001-test.sh -p 4001:4001 -p 127.0.0.1:8080:8080 -p 127.0.0.1:5001:5001 ipfs/kubo
+
+## Testing setup using ipfs cli commands in docker:
+
+$> docker logs ipfs_node
+$> docker exec ipfs_node ipfs swarm peers
+
+it is based on these page details
+https://docs.ipfs.tech/how-to/run-ipfs-inside-docker/#set-up

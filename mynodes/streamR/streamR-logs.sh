@@ -1,0 +1,1 @@
+ssh azure06 docker logs  69c7 | tail -50 | egrep -i "reward|claim"; echo "====================="; docker logs c095| tail -50 | egrep -i "reward|claim"; echo "====================="; docker logs 9c8b| tail -50 | egrep -i "reward|claim"; echo "====================="; docker logs 8cd9| tail -50 | egrep -i  "reward|claim";

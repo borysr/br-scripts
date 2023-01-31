@@ -1,0 +1,2 @@
+adduser borysr; usermod -aG sudo borysr; usermod -aG docker borysr;
+sudo adduser borysr; sudo usermod -aG sudo borysr; sudo usermod -aG docker borysr;

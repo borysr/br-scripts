@@ -1,0 +1,53 @@
+# script to restart timpicollector
+while true; do #create an infinite loop
+    if pgrep -x TimpiCollector > /dev/null ; then #check if it's already running
+        sleep 60; #sleep for 60 seconds if it's running
+    else 
+        ~/TimpiCollector-0-8-35-linux/TimpiCollector ; #start it if it isn't running
+    fi; 
+done
+
+#############################################
+## Update & Security 
+sudo apt update && sudo apt -y upgrade
+sudo apt install p7zip-full lxqt -y
+
+## Automatic Updates - optional
+# sudo apt install unattended-upgrades
+# sudo dpkg-reconfigure -plow unattended-upgrades
+
+## Software Download & Create Log Directory
+## To install, simply download the file:
+export fileUrl=https://cdn.discordapp.com/attachments/981709237812072498/1011434761786507404/Collector_Linux_0.8.36.zip
+export fileName=$(basename "$fileUrl"})
+
+curl ${fileUrl} -o timpi.zip || wget ${fileUrl}-o timpi.zip
+
+## Unpack:
+7z x timpi.zip
+
+## Make the config directory:
+sudo mkdir /var/log/timpi && sudo chown $USER:$USER /var/log/timpi
+
+## Make the config directory:
+sudo mkdir /etc/timpi && sudo chown $USER:$USER /etc/timpi
+
+## Move into the Timpi directory:
+cd ~/TimpiCollector-0-8-35-linux
+
+## Make the collector executable:clear
+chmod 700 ./TimpiCollector
+
+# crontab - 
+# @reboot cd /home/borysr/TimpiCollector/; . $HOME/.profile; ./TimpiCollector >> timpi.log 2>&1 &
+
+## Run the Timpi Collector
+./TimpiCollector
+
+
+
+## Final Step: ip:5000 then you can change the coordinator & GeoCore address 
+
+## to: http://gc2.timpi.me/ then restart Timpi Collector.
+
+
