@@ -7,7 +7,7 @@ export image_name=${cloud_img_url##*/} # kinetic-server-cloudimg-amd64.img
 wget ${cloud_img_url}
 
 # virt-edit -a ${image_name} /etc/cloud/cloud.cfg
-# virt-customize --install atop,htop,vim,qemu-guest-agent,curl,wget,net-tools -a ${image_name} --truncate /etc/machine-id
+# virt-customize --install atop,htop,vim,qemu-guest-agent,curl,wget,net-tools,ncdu -a ${image_name} --truncate /etc/machine-id
 
 qm create ${vm_id} --memory 4048 --core 4 --name ubuntu2210-cloud --net0 virtio,bridge=vmbr0
 qm importdisk ${vm_id} ${image_name}  ${storage}
