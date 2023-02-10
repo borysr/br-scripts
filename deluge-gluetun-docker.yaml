@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 8888:8888/tcp # HTTP proxy
+      - 8388:8388/tcp # Shadowsocks
+      - 8388:8388/udp # Shadowsocks
+      - 8112:8112 # port for deluge
+    volumes:
+      - /volume1/docker/gluetun:/gluetun
+    environment:
+      - VPN_SERVICE_PROVIDER=nordvpn
+      - VPN_TYPE=openvpn
+      - OPENVPN_USER=borysr@gmail.com
+      - OPENVPN_PASSWORD=!!tbvr00AA!!
+      - SERVER_REGIONS=United States,United Kingdom,Canada,Germany
+      - TZ=America/Chicago
+      - HTTPPROXY=on #change to off if you don't wish to enable
+      - SHADOWSOCKS=on #change to off if you don't wish to enable
+    network_mode: synobridge
+    restart: unless-stopped
+      
+  linuxserver-deluge:
+    image: linuxserver/deluge
+    container_name: deluge
+    environment:
+      - PUID=1028
+      - PGID=100
+      - TZ=America/Chicago
+      - DELUGE_LOGLEVEL=error #optional
+    volumes:
+      - /volume1/docker/configs/deluge:/config
+      - /volume1/data/torrents:/data/torrents
+    network_mode: service:gluetun # run on the vpn network
+    depends_on:
+      - gluetun
+    restart: unless-stopped
