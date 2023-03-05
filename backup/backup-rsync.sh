@@ -15,7 +15,7 @@ mkdir -p $today_dir
 mkdir -p $month_dir
 mkdir -p $mostrecent_dir
 
-    export dry_run="--dry-run"
+    export dry_run="" #"--dry-run"
 
     ## 
 echo ">>>>>>>>>>>Backup /etc >>>>>>>>>>>>" $(date)
