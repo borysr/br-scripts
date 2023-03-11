@@ -1,12 +1,12 @@
 #!/bin/sh -x
 alias kssh='kitty +kitten ssh '
 export keys_dir="/home/borysr/Documents/nodes/presearch/keys"
-export old_ip="oracl02"
+export old_ip="oracl01"
 export old_user=""
 export old_login=${old_user}${old_ip}
-export node_id="pre07"
+export node_id="pre10"
 
-export new_ip="azure04"
+export new_ip="azure07"
 export new_user=""
 export new_login=${new_ip}
 
@@ -16,8 +16,8 @@ kssh ${new_login} "docker stop presearch_node; docker rm presearch_node; docker 
 
 kssh ${new_login} ls -la
 
-kssh ${old_login} docker ps
-kssh ${old_login} docker stop presearch-node presearch-auto-updater pre-auto-updater
+# kssh ${old_login} docker ps
+# kssh ${old_login} docker stop presearch-node presearch-auto-updater pre-auto-updater
 
 # kssh ${old_login} poweroff
 
