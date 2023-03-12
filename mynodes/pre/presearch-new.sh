@@ -1,12 +1,12 @@
 #!/bin/sh -x
 alias kssh='kitty +kitten ssh '
 export keys_dir="/home/borysr/Documents/nodes/presearch/keys"
-export old_ip="oracl01"
+export old_ip="oracl03"
 export old_user=""
 export old_login=${old_user}${old_ip}
-export node_id="pre10"
+export node_id="pre11"
 
-export new_ip="azure07"
+export new_ip="azure08"
 export new_user=""
 export new_login=${new_ip}
 
