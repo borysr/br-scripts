@@ -6,7 +6,7 @@ backup_id=$(hostname).$(date +%4Y%m%d-%H%M%S)
 echo $backup_id
 
 tar -cvpzf backup.home.tar.gz  \
---exclude=/home/*/.gvfs --exclude=/home/*/.cache \
+--exclude=/home/*/.gvfs --exclude=/home/*/.cache --exclude=/home/*/Downloads \
 --exclude=/home/*/thinclient_drives \
 --exclude=/home/*/.local/share/Trash /home/
 
