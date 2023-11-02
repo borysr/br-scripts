@@ -1,0 +1,114 @@
+[user]
+	name = Borys Romanyuk
+	email = borysr@gmail.com
+	signingKey = ""
+	
+#[credential "https://github.com"]
+#	helper = 
+#	helper = !'C:\\Program Files (x86)\\GitHub CLI\\gh.exe' auth git-credential
+	
+[core]
+	autocrlf = true
+	longpaths = true
+	excludesFile = ~/.gitignore
+
+[diff]
+	tool = bc
+[difftool "bc"]
+	prompt = false
+	bc = trustExitCode
+	path = c:/Program Files/Beyond Compare 4/bcomp.exe
+	
+[merge]
+	tool = vsdiffmerge
+[mergetool]
+	prompt = true
+[mergetool "vsdiffmerge"]
+	cmd = \"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\vsdiffmerge.exe\" \"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\" //m
+	keepBackup = false
+	trustExitCode = true
+	
+[alias]
+	lol = log --oneline
+	lolt = "!f() { BRANCH=$(git rev-parse --abbrev-ref HEAD); echo \"Viewing THEIR changes not currently on local: ${1-${BRANCH}}\"; git lol ${1-${BRANCH}}..origin/${1-${BRANCH}}; }; f"
+	lolo = "!f() { BRANCH=$(git rev-parse --abbrev-ref HEAD); echo \"Viewing YOUR changes not currently on remote: ${1-${BRANCH}}\"; git lol origin/${1-${BRANCH}}..${1-${BRANCH}}; }; f"
+	lolv = log --pretty=oneline
+	st = status
+	dd = "!f() { git difftool --dir-diff ${1-HEAD}; }; f "
+	refresh = !git status && git diff > tmp.patch && (git reset --hard && git pull --rebase upstream master && git push origin && git apply tmp.patch) ; rm tmp.patch
+	track = "!f() { BRANCH=$(git rev-parse --abbrev-ref HEAD); git branch --set-upstream-to=origin/${1-${BRANCH}} ${1-${BRANCH}} || 	( echo \"Remote branch not found! Creating ${1-${BRANCH}}\" && 	git push --set-upstream origin ${1-${BRANCH}} ) }; f "
+	fa = fetch --all
+	fap = fetch --all --prune
+	fapp = !git fap && git pull --all
+	aa = !git add -A . && git reset HEAD **/*settings*.json **/kubeconfig Gemfile* .ruby* **/users.yml **/session_store.rb procfile* && git st
+	aar = !git add -A . $$ git st
+	co = "!f() { git checkout ${1} && git track ${1}; }; f "
+	com = !git co master && git fapp
+	# cos = !git co staging && git fapp
+	cod = !git co develop && git fapp
+	ca = commit --amend
+	cm = commit -m
+
+	# Pull Requests
+	pr = "!f() { BRANCH=$(git rev-parse --abbrev-ref HEAD) && echo 'Creating Pull Request for current branch...' && echo "$ az repos pr create --open --source-branch ${1-${BRANCH}} --target-branch develop}" && az repos pr create --open --source-branch ${1-${BRANCH}} --target-branch ${develop}; }; f "
+	prc = "!f() { echo "Checking out PR $1": && echo "$ az repos pr checkout --id ${1}" && az repos pr checkout --id ${1}; }; f "
+	prv = "!f() { BRANCH=$(git rev-parse --abbrev-ref HEAD) && echo 'Viewing PR for current branch:' && echo "$ az repos pr show --open --id ${1-${BRANCH}}" && az repos pr show --open --id ${1-${BRANCH}}; }; f "
+
+	# Stashing
+	sl = stash list
+	sm = stash push -m
+	# sa
+
+	# Remote CRUD
+	lr = remote -v
+	lbr = branch --list -r
+
+	# Branch CRUD + rename
+	cb = "!f() { echo \"Creating branch (with tracking): $1\"; git checkout -b $1; git track $1; }; f"
+	cfs = cos && cb
+	
+	lb = branch --list
+	lba = branch --list -a
+	# ub = "!f() { echo \"This will fetch all and then rebase interactive the current branch to latest.\"; \
+	# 	read -p \"Are you sure? [yN] \" -n 1 -r; echo $REPLY; \
+	# 	[[ $REPLY =~ ^[Yy]$ ]] && git fap && git rebase -i origin/${1-master}; }; f "
+	ub = "!f() { echo \"This will REBASE the current branch onto latest from '${1-develop}'.\"; read -p \"Are you sure? [yN] \" -n 1 -r; [[ $REPLY =~ ^[Yy]$ ]] && git fetch origin && git rebase origin/${1-develop} && echo 'Operation complete. You may need to force push changes.'; }; f "
+	db = "!f() { BRANCH=$(git rev-parse --abbrev-ref HEAD); echo \"This will delete branch '${1-${BRANCH}}' both locally and on the remote.\"; read -p \"Are you sure? [y/N] \" -n 1 -r; echo ; [[ $REPLY =~ ^[Yy]$ ]] && (git com && git branch -d ${1-${BRANCH}} && git push origin --delete ${1-${BRANCH}} ; echo \"Deleted '${1-${BRANCH}}' successfully\" ); }; f "
+	rb = "!f() { BRANCH=$(git rev-parse --abbrev-ref HEAD); echo \"This will rename branch (from $BRANCH : $1)\"; read -p \"Are you sure? [yN] \" -n 1 -r; [[ $REPLY =~ ^[Yy]$ ]] && git branch -m $BRANCH $1 && git branch --unset-upstream && git push origin :$BRANCH $1 && git push origin -u $1; }; f"
+
+	#Tag CRUD
+	ct = !git tag $1 && git push origin --tags
+	lt = tag
+	dt = "!f() { echo \"This will delete the given tag from local and remote.\"; read -p \"Are you sure? [yN] \" -n 1 -r; echo $REPLY; [[ $REPLY =~ ^[Yy]$ ]] && git tag -d ${1-tag} && git push --delete origin ${1-tag}; }; f "
+
+	new = !sh -c 'git log $1@{1}..$1@{0} "$@"'
+	bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f "
+
+[push]
+	default = upstream
+
+
+[rerere]
+	enabled = true
+[init]
+	defaultBranch = master
+
+[gpg]
+	program = gpg
+[commit]
+	gpgSign = false
+[tag]
+	forceSignAnnotated = false
+[gui]
+	recentrepo = C:/Users/BorysRomanyuk/source/repos/S3.Core
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[credential]
+	helper = 
+	helper = manager-core
+[credential "https://dev.azure.com"]
+	usehttppath = true
+
